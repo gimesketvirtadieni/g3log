@@ -8,3 +8,6 @@ build_travis
 gtest-1.7.0
 generated_definitions.hpp
 *~
+.settings/*
+Debug/*
+Release/*
