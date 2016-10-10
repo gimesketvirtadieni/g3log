@@ -116,6 +116,22 @@ namespace g3 {
       token_done.wait();
    }
 
+   void LogWorker::removeWrappedSink(std::shared_ptr<g3::internal::SinkWrapper> sink) {
+
+      // capturing sink by reference is safe because this method waits for this task to complete
+      // passing sink by value may lead to keeping it in other thread's context even after this method returns
+      auto bg_removesink_call = [this, &sink] {
+
+         // once sink is removed from worker, it will not receive new log entries so its destructor can flush sink's content safely
+         // sink flush is done implicitly dy destroying as capturing sink by reference and waiting for task to complete guarantees sink is destroyed
+         _impl._sinks.erase(std::remove(_impl._sinks.begin(), _impl._sinks.end(), sink), _impl._sinks.end());
+      };
+      auto token_done = g3::spawn_task(bg_removesink_call, _impl._bg.get());
+
+      // even though remove sink can use async semantic, making it sync improves overall performance
+      token_done.wait();
+   }
+
    std::unique_ptr<LogWorker> LogWorker::createLogWorker() {
       return std::unique_ptr<LogWorker>(new LogWorker);
    }
