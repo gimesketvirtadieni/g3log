@@ -124,14 +124,12 @@ namespace g3 {
 
 
    LogMessage::LogMessage(const std::string& file, const int line,
-                          const std::string& function, const LEVELS& level,
-						  const std::set<std::string> labels)
+                          const std::string& function, const LEVELS& level)
       : _call_thread_id(std::this_thread::get_id())
       , _file(splitFileName(file))
       , _line(line)
       , _function(function)
       , _level(level)
-      , _labels(labels)
    {
       g3::timespec_get(&_timestamp/*, TIME_UTC*/);
       // Another possibility could be to Falling back to clock_gettime as TIME_UTC 
@@ -141,7 +139,7 @@ namespace g3 {
 
 
    LogMessage::LogMessage(const std::string& fatalOsSignalCrashMessage)
-      : LogMessage( {""}, 0, {""}, internal::FATAL_SIGNAL, {}) {
+      : LogMessage( {""}, 0, {""}, internal::FATAL_SIGNAL) {
       _message.append(fatalOsSignalCrashMessage);
    }
 
@@ -152,7 +150,6 @@ namespace g3 {
       , _line(other._line)
       , _function(other._function)
       , _level(other._level)
-      , _labels(other._labels)
       , _expression(other._expression)
       , _message(other._message) {
    }
@@ -164,7 +161,6 @@ namespace g3 {
       , _line(other._line)
       , _function(std::move(other._function))
       , _level(other._level)
-      , _labels(other._labels)
       , _expression(std::move(other._expression))
       , _message(std::move(other._message)) {
    }

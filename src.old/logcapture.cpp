@@ -29,7 +29,7 @@
 LogCapture::~LogCapture() {
    using namespace g3::internal;
    SIGNAL_HANDLER_VERIFY();
-   saveMessage(_stream.str().c_str(), _file, _line, _function, _level, _log_stream._labels, _expression, _fatal_signal, _stack_trace.c_str());
+   saveMessage(_stream.str().c_str(), _file, _line, _function, _level, _expression, _fatal_signal, _stack_trace.c_str());
 }
 
 
@@ -45,7 +45,7 @@ LogCapture::LogCapture(const LEVELS &level, g3::SignalType fatal_signal, const c
  */
 LogCapture::LogCapture(const char *file, const int line, const char *function, const LEVELS &level,
                        const char *expression, g3::SignalType fatal_signal, const char *dump)
-   : _log_stream(_stream, _labels), _file(file), _line(line), _function(function), _level(level), _expression(expression), _fatal_signal(fatal_signal) {
+   : _file(file), _line(line), _function(function), _level(level), _expression(expression), _fatal_signal(fatal_signal) {
 
    if (g3::internal::wasFatal(level)) {
       _stack_trace = {"\n*******\tSTACKDUMP *******\n"};

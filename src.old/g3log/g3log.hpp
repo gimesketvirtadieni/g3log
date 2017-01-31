@@ -27,7 +27,7 @@
 
 #include <string>
 #include <functional>
-#include <set>
+
 
 #if !(defined(__PRETTY_FUNCTION__))
 #define __PRETTY_FUNCTION__   __FUNCTION__
@@ -94,7 +94,7 @@ namespace g3 {
       bool isLoggingInitialized();
 
       // Save the created LogMessage to any existing sinks
-      void saveMessage(const char *message, const char *file, int line, const char *function, const LEVELS &level, const std::set<std::string>& labels,
+      void saveMessage(const char *message, const char *file, int line, const char *function, const LEVELS &level,
                        const char *boolean_expression, int fatal_signal, const char *stack_trace);
 
       // forwards the message to all sinks

@@ -19,7 +19,6 @@
 #include <sstream>
 #include <thread>
 #include <memory>
-#include <set>
 
 namespace g3 {
 
@@ -43,20 +42,6 @@ namespace g3 {
       }
       std::string level() const {
          return _level.text;
-      }
-      std::string labels() const {
-         std::ostringstream ss;
-         bool added = false;
-
-         for(auto label : _labels) {
-            if(added) {
-               ss << ",";
-            }
- 	        ss << label;
-            added = true;
-         }
-
-         return ss.str();
       }
 
       /// use a different format string to get a different look on the time.
@@ -88,7 +73,7 @@ namespace g3 {
       LogMessage& operator=(LogMessage other);
 
 
-      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level, const std::set<std::string> labels);
+      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level);
 
       explicit LogMessage(const std::string& fatalOsSignalCrashMessage);
       LogMessage(const LogMessage& other);
@@ -105,7 +90,6 @@ namespace g3 {
       int _line;
       std::string _function;
       LEVELS _level;
-      std::set<std::string> _labels;
       std::string _expression; // only with content for CHECK(...) calls
       mutable std::string _message;
 
@@ -119,7 +103,6 @@ namespace g3 {
          swap(first._line, second._line);
          swap(first._function, second._function);
          swap(first._level, second._level);
-         swap(first._labels, second._labels);
          swap(first._expression, second._expression);
          swap(first._message, second._message);
       }
