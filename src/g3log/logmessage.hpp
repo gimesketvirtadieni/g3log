@@ -14,12 +14,12 @@
 #include "g3log/time.hpp"
 #include "g3log/moveoncopy.hpp"
 #include "g3log/crashhandler.hpp"
+#include "g3log/labels.hpp"
 
 #include <string>
 #include <sstream>
 #include <thread>
 #include <memory>
-#include <set>
 
 namespace g3 {
 
@@ -88,7 +88,7 @@ namespace g3 {
       LogMessage& operator=(LogMessage other);
 
 
-      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level, const std::set<std::string> labels);
+      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level, const Labels& labels);
 
       explicit LogMessage(const std::string& fatalOsSignalCrashMessage);
       LogMessage(const LogMessage& other);
@@ -105,7 +105,7 @@ namespace g3 {
       int _line;
       std::string _function;
       LEVELS _level;
-      std::set<std::string> _labels;
+      Labels _labels;
       std::string _expression; // only with content for CHECK(...) calls
       mutable std::string _message;
 

@@ -29,7 +29,7 @@
 LogCapture::~LogCapture() {
    using namespace g3::internal;
    SIGNAL_HANDLER_VERIFY();
-   saveMessage(_stream.str().c_str(), _file, _line, _function, _level, _log_stream._labels, _expression, _fatal_signal, _stack_trace.c_str());
+   saveMessage(_stream.str().c_str(), _file, _line, _function, _level, _labels, _expression, _fatal_signal, _stack_trace.c_str());
 }
 
 

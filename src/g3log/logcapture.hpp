@@ -11,25 +11,17 @@
 #include "g3log/loglevels.hpp"
 #include "g3log/g3log.hpp"
 #include "g3log/crashhandler.hpp"
+#include "g3log/labels.hpp"
 
 #include <string>
 #include <sstream>
 #include <cstdarg>
 #include <csignal>
-#include <set>
-
-
-/**
- * This 'labels' alias can be used for passing labels to log stream
- */
-namespace g3 {
-	using labels = std::set<std::string>;
-}
 
 
 struct LogStream
 {
-	LogStream(std::ostream& o, g3::labels& l) : _out(o), _labels(l) {}
+	LogStream(std::ostream& o, g3::Labels& l) : _out(o), _labels(l) {}
 
 	template<typename T>
 	inline const LogStream& operator<<(const T& v) const
@@ -44,15 +36,15 @@ struct LogStream
 		return *this;
 	}
 
-	// specializations for 'labels' type
-	inline const LogStream& operator<<(const g3::labels& l) const
+	// specializations for 'Labels' type
+	inline const LogStream& operator<<(const g3::Labels& l) const
 	{
 		_labels.insert(l.begin(), l.end());
 		return *this;
 	}
 
 	std::ostream& _out;
-	g3::labels& _labels;
+	g3::Labels& _labels;
 };
 
 
@@ -102,7 +94,7 @@ struct LogCapture {
    std::ostringstream _stream;
    LogStream _log_stream;
    std::string _stack_trace;
-   g3::labels _labels;
+   g3::Labels _labels;
    const char *_file;
    const int _line;
    const char *_function;

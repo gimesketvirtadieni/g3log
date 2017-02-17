@@ -125,7 +125,7 @@ namespace g3 {
 
    LogMessage::LogMessage(const std::string& file, const int line,
                           const std::string& function, const LEVELS& level,
-						  const std::set<std::string> labels)
+						  const Labels& labels)
       : _call_thread_id(std::this_thread::get_id())
       , _file(splitFileName(file))
       , _line(line)

@@ -156,7 +156,7 @@ namespace g3 {
 
       /** explicits copy of all input. This is makes it possibly to use g3log across dynamically loaded libraries
       * i.e. (dlopen + dlsym)  */
-      void saveMessage(const char *entry, const char *file, int line, const char *function, const LEVELS &level, const std::set<std::string>& labels,
+      void saveMessage(const char *entry, const char *file, int line, const char *function, const LEVELS &level, const Labels &labels,
                        const char *boolean_expression, int fatal_signal, const char *stack_trace) {
          LEVELS msgLevel {level};
          LogMessagePtr message {std2::make_unique<LogMessage>(file, line, function, msgLevel, labels)};
