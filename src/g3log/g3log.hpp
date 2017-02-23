@@ -217,4 +217,5 @@ And here is possible output
 #define CHECK_F(boolean_expression, printf_like_message, ...)    \
    if (false == (boolean_expression))  INTERNAL_CONTRACT_MESSAGE(#boolean_expression).capturef(printf_like_message, ##__VA_ARGS__)
 
-
+// It allows writing like following: LOG(INFO) << LABELS{"label"}
+#define LABELS g3::Labels

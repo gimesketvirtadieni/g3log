@@ -10,16 +10,18 @@ namespace g3 {
    namespace internal {
 
       struct InsensitiveComparator {
- 	     bool operator() (const std::string& a, const std::string& b) const {
+         bool operator() (const std::string& a, const std::string& b) const {
+            auto result = true;  // by default (a<b)=true
+
             if (a.length() == b.length()) {
 
-               // using equals function to determine if a < b
-               return std::equal(b.begin(), b.end(), a.begin(), [](unsigned char a, unsigned char b) {
-                  return std::tolower(a) < std::tolower(b);
+               // using equals function to determine if (a<b)=false
+               result = !std::equal(b.begin(), b.end(), a.begin(), [](unsigned char a, unsigned char b) {
+                  return std::tolower(a) >= std::tolower(b);
                });
-            } else {
-               return false;
             }
+
+            return result;
          }
       };
    } // internal
