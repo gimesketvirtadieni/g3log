@@ -56,7 +56,7 @@ The logger will catch certain fatal events *(Linux/OSX: signals, Windows: fatal 
  
 6. It is cross platform. Tested and used by me or by clients on OSX, Windows, Ubuntu, CentOS
 
-7. G3log and G2log is used world wide in commercial products as well as hobby projects. G2log is used since early 2011.
+7. G3log and G2log are used worldwide in commercial products as well as hobby projects. G2log is used since early 2011.
 
 8. The code is given for free as public domain. This gives the option to change, use, and do whatever with it, no strings attached.
 
@@ -205,14 +205,49 @@ more details
 
 ```
 cd g3log
+cd 3rdParty/gtest
+unzip gtest-1.7.0.zip
+cd ../../
 mkdir build
 cd build
 ```
+## Configuring for installing on nix (OSX, Linux, MinGW)
+Default install prefix on Linux is `/usr/local`
+To change it please set  `CPACK_PACKAGING_INSTALL_PREFIX `
+
+```
+cmake -DCPACK_PACKAGING_INSTALL_PREFIX= ...
+```
+
 
 ## Building on Linux
 ```
 cmake -DCMAKE_BUILD_TYPE=Release ..
 make 
+```
+## Installing On Linux
+```
+sudo make install
+```
+Alternative on Debian
+```
+make package
+sudo dpkg -i g3log-<version>-Linux.deb
+```
+
+## Building on MinGW
+```
+cmake -G "MinGW Makefiles" -DCMAKE_BUILD_TYPE=Release ..
+make 
+```
+## Installing on MinGW
+```
+make install
+```
+Alternative using NSIS
+```
+make package
+g3log-<version>-win32.exe
 ```
 
 ## Building on Windows

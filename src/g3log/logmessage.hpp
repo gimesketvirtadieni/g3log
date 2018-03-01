@@ -32,6 +32,9 @@ namespace g3 {
    * desired way.
    */
    struct LogMessage {
+      std::string file_path() const {
+         return _file_path;
+      }
       std::string file() const {
          return _file;
       }
@@ -99,9 +102,10 @@ namespace g3 {
       // Complete access to the raw data in case the helper functions above
       // are not enough.
       //
-      timespec _timestamp;
+      g3::high_resolution_time_point _timestamp;
       std::thread::id _call_thread_id;
       std::string _file;
+      std::string _file_path;
       int _line;
       std::string _function;
       LEVELS _level;

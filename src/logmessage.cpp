@@ -27,7 +27,7 @@ namespace g3 {
    // helper for setting the normal log details in an entry
    std::string LogDetailsToString(const LogMessage& msg) {
       std::string out;
-      out.append("\n" + msg.timestamp() + "\t"
+      out.append(msg.timestamp() + "\t"
                  + msg.level() + " [" + msg.file() + "->" + msg.function() + ":" + msg.line() + "]\t");
       return out;
    }
@@ -36,16 +36,16 @@ namespace g3 {
    // helper for normal
    std::string normalToString(const LogMessage& msg) {
       auto out = LogDetailsToString(msg);
-      out.append('"' + msg.message() + '"');
+      out.append(msg.message() + '\n');
       return out;
    }
 
    // helper for fatal signal
    std::string  fatalSignalToString(const LogMessage& msg) {
       std::string out; // clear any previous text and formatting
-      out.append("\n" + msg.timestamp()
+      out.append(msg.timestamp()
                  + "\n\n***** FATAL SIGNAL RECEIVED ******* \n"
-                 + '"' + msg.message() + '"');
+                 + msg.message() + '\n');
       return out;
    }
 
@@ -53,9 +53,9 @@ namespace g3 {
    // helper for fatal exception (windows only)
    std::string  fatalExceptionToString(const LogMessage& msg) {
       std::string out; // clear any previous text and formatting
-      out.append("\n" + msg.timestamp()
+      out.append(msg.timestamp()
                  + "\n\n***** FATAL EXCEPTION RECEIVED ******* \n"
-                 + '"' + msg.message() + '"');
+                 + msg.message() + '\n');
       return out;
    }
 
@@ -104,14 +104,14 @@ namespace g3 {
       // What? Did we hit a custom made level?
       auto out = LogDetailsToString(*this);
       static const std::string errorUnknown = {"UNKNOWN or Custom made Log Message Type"};
-      out.append("\n\t*******" + errorUnknown + "\t\n" + '"' + message() + '"');
+      out.append("\t*******" + errorUnknown + "\n\t" + message() + '\n');
       return out;
    }
 
 
 
    std::string LogMessage::timestamp(const std::string& time_look) const {
-      return g3::localtime_formatted(_timestamp, time_look);
+      return g3::localtime_formatted(to_system_time(_timestamp), time_look);
    }
 
 
@@ -126,17 +126,18 @@ namespace g3 {
    LogMessage::LogMessage(const std::string& file, const int line,
                           const std::string& function, const LEVELS& level,
 						  const Labels& labels)
-      : _call_thread_id(std::this_thread::get_id())
+      : _timestamp(std::chrono::high_resolution_clock::now())
+      , _call_thread_id(std::this_thread::get_id())
+#if defined(G3_LOG_FULL_FILENAME)
+      , _file(file)
+#else
       , _file(splitFileName(file))
+#endif
+      , _file_path(file)
       , _line(line)
       , _function(function)
       , _level(level)
-      , _labels(labels)
-   {
-      g3::timespec_get(&_timestamp/*, TIME_UTC*/);
-      // Another possibility could be to Falling back to clock_gettime as TIME_UTC 
-      // is not recognized by travis CI. 
-      // i.e. clock_gettime(CLOCK_REALTIME, &_timestamp);
+      , _labels(labels) {
    }
 
 
@@ -149,6 +150,7 @@ namespace g3 {
       : _timestamp(other._timestamp)
       , _call_thread_id(other._call_thread_id)
       , _file(other._file)
+      , _file_path(other._file_path)
       , _line(other._line)
       , _function(other._function)
       , _level(other._level)
@@ -157,10 +159,11 @@ namespace g3 {
       , _message(other._message) {
    }
 
-   LogMessage::LogMessage(LogMessage &&other)
+   LogMessage::LogMessage(LogMessage&& other)
       : _timestamp(other._timestamp)
       , _call_thread_id(other._call_thread_id)
       , _file(std::move(other._file))
+      , _file_path(std::move(other._file_path))
       , _line(other._line)
       , _function(std::move(other._function))
       , _level(other._level)
