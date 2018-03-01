@@ -91,7 +91,7 @@ namespace g3 {
       LogMessage& operator=(LogMessage other);
 
 
-      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level, const Labels& labels);
+      LogMessage(const std::string& file, const int line, const std::string& function, const LEVELS& level, const Labels& labels = {});
 
       explicit LogMessage(const std::string& fatalOsSignalCrashMessage);
       LogMessage(const LogMessage& other);
