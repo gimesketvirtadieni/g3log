@@ -142,7 +142,7 @@ namespace g3 {
 
 
    LogMessage::LogMessage(const std::string& fatalOsSignalCrashMessage)
-      : LogMessage( {""}, 0, {""}, internal::FATAL_SIGNAL, {}) {
+      : LogMessage( {""}, 0, {""}, internal::FATAL_SIGNAL) {
       _message.append(fatalOsSignalCrashMessage);
    }
 
