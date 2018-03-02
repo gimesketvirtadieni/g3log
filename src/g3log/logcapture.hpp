@@ -96,7 +96,7 @@ struct LogCapture {
 
 
    /// prettifying API for this completely open struct
-   LogStream& stream() {
+   LogStream &stream() {
       return _log_stream;
    }
 

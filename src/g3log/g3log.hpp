@@ -28,7 +28,6 @@
 
 #include <string>
 #include <functional>
-#include <set>
 
 #if !(defined(__PRETTY_FUNCTION__))
 #define __PRETTY_FUNCTION__   __FUNCTION__
